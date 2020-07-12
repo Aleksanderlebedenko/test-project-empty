@@ -11,11 +11,15 @@ services:
       - 8001:80
     networks:
       - symfony
+    depends_on:
+      - php
   php:
     build:
       context: .
       dockerfile: Dockerfile-php
     environment:
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
       APP_ENV: dev
     volumes:
       - ./symfony/:/var/www/symfony/
@@ -44,3 +48,8 @@ services:
 
 networks:
   symfony:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
