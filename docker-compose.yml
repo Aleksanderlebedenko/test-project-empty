@@ -6,11 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
     volumes:
-      - ./symfony/:/var/www/symfony/
+      - ./app/:/var/www/app/
     ports:
       - 8001:80
     networks:
-      - symfony
+      - empty
     depends_on:
       - php
   php:
@@ -22,9 +22,9 @@ services:
       PHP_IDE_CONFIG: "serverName=Docker"
       APP_ENV: dev
     volumes:
-      - ./symfony/:/var/www/symfony/
+      - ./app/:/var/www/app/
     networks:
-      - symfony
+      - empty
     depends_on:
       - mysql
   mysql:
@@ -35,8 +35,8 @@ services:
       '--default-authentication-plugin=mysql_native_password'
     ]
     environment:
-      MYSQL_DATABASE: test-project-db
-      MYSQL_USER: test-project-user
+      MYSQL_DATABASE: test-project-db-empty
+      MYSQL_USER: test-project-user-empty
       MYSQL_PASSWORD: 123456
       MYSQL_ROOT_PASSWORD: root
     ports:
@@ -44,12 +44,12 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
-      - symfony
+      - empty
 
 networks:
-  symfony:
+  empty:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 192.168.220.0/28
+        - subnet: 192.168.210.0/28
