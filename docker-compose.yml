@@ -10,7 +10,7 @@ services:
     ports:
       - 8001:80
     networks:
-      - empty
+      - app
     depends_on:
       - php
   php:
@@ -18,13 +18,13 @@ services:
       context: .
       dockerfile: Dockerfile-php
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_host=192.168.210.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       APP_ENV: dev
     volumes:
       - ./app/:/var/www/app/
     networks:
-      - empty
+      - app
     depends_on:
       - mysql
   mysql:
@@ -44,10 +44,10 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
-      - empty
+      - app
 
 networks:
-  empty:
+  app:
     driver: bridge
     ipam:
       driver: default
